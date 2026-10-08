@@ -4,6 +4,19 @@ A practical troubleshooting portfolio documenting real problems encountered whil
 
 The purpose of this repository is to show **how problems were investigated and solved**, not simply to list Linux commands.
 
+## Learning and portfolio workflow
+
+This repository is my ongoing Linux/infrastructure learning portfolio, with Azure and automation as later stages. Earlier cases were completed with AI guidance. I am now practicing how to choose diagnostic checks, interpret evidence and repeat tasks using documentation. Published notes are learning records, not claims of independent mastery.
+
+- [Current progress and next task](learning-progress.md)
+- [How each session is documented and published](docs/workflow.md)
+- [Latest learning baseline](journal/2026-10-08-learning-baseline.md)
+- [First repeat-practice lab: virtualization inventory](labs/01-virtualization-inventory.md)
+- [Incident journal template](templates/incident.md)
+- [Command notebook organized by questions](reference/command-notebook.md)
+
+Every meaningful lab or investigation should leave a dated record of the goal, commands, evidence, reasoning, result, assistance used and next step. Incomplete attempts are labeled honestly. Only reviewed, sanitized material is published.
+
 ## Environment
 
 - OS: Debian GNU/Linux 13 (Trixie)
@@ -26,6 +39,7 @@ The purpose of this repository is to show **how problems were investigated and s
 6. [HDMI Dual-Monitor Configuration](troubleshooting/06-dual-monitor-hdmi.md)
 7. [Shutdown Investigation and Running VM](troubleshooting/07-shutdown-and-vm.md)
 8. [Linux File Operations and `cat`](troubleshooting/08-file-operations-and-cat.md)
+9. [SSH Key Setup and GitHub Authentication](troubleshooting/09-ssh-setup.md) — existing draft; formatting and accuracy review pending.
 
 ## Troubleshooting Method
 

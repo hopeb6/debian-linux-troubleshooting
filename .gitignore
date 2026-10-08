@@ -1,0 +1,23 @@
+# Local private evidence and credentials; publish only reviewed excerpts.
+private-evidence/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Large VM disks and installation media do not belong in this portfolio.
+*.qcow2
+*.vdi
+*.vmdk
+*.vhd
+*.vhdx
+*.iso
+
+# Generated files and editor/OS leftovers.
+__pycache__/
+.DS_Store
+*.swp
+*.swo
