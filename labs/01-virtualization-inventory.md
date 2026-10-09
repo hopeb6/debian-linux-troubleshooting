@@ -1,6 +1,6 @@
 # Lab 01 — Observe the current virtualization state
 
-**Status:** assigned; current output not yet recorded.
+**Status:** both outputs recorded in the [2026-10-09 journal](../journal/2026-10-09-virtualization-inventory.md); learner interpretation pending.
 **Environment:** learner's Debian host with existing libvirt/virt-manager installation.
 **Scope:** observation only. Do not stop/start a VM or change the working virtual network for this exercise.
 
