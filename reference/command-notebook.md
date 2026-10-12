@@ -67,6 +67,25 @@ were observations from that setup: using `sudo` is not a universal guarantee of
 which connection a command selects. The commands above make the connection
 explicit. The case's earlier results do not establish the host's current state.
 
+## How much memory and filesystem space is available for a lab?
+
+```bash
+free -h
+df -hT / /home
+```
+
+- **Where and safety:** Debian host terminal; read-only, no sudo required.
+- **Purpose:** inspect memory/swap usage and the filesystems containing `/` and `/home`.
+- **Read the output:** in `free`, use the `Mem:` row's `available` estimate for
+  initial headroom, not just `free`. Swap usage is not additional physical RAM
+  and does not by itself show current swapping activity.
+- **Disk interpretation:** `df -hT` includes readable sizes and filesystem type.
+  Read `Avail` and `Use%`; repeated rows for the same filesystem are not separate
+  free-space pools. Confirm the intended VM disk location belongs to the measured
+  filesystem before allocating storage.
+- **Limit:** these are snapshots, not a guarantee that a future workload will fit.
+  The [capacity journal](../journal/2026-10-12-host-capacity.md) records actual evidence.
+
 ## Add the next command
 
 For each new entry, record the question, exact command, where to run it, whether
