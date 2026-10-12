@@ -2,7 +2,7 @@
 
 ## Current milestone
 
-Prepare the separate Debian server lab using the [2026-10-12 capacity check](journal/2026-10-12-host-capacity.md). The learner correctly identified 1.5 GiB available RAM and 141G available filesystem space after command guidance. Next, recheck RAM after closing unused applications, confirm the VM storage location, and choose safe VM resources.
+Prepare the separate Debian server lab using the [2026-10-12 capacity check](journal/2026-10-12-host-capacity.md). The learner correctly identified 1.5 GiB available RAM and 141G available filesystem space after command guidance. Follow-up learner output shows Windows running and a QEMU process using about 3.43 GiB RSS. Next, save guest work and shut Windows down normally when finished using it, verify its stopped state and available host RAM, and confirm the lab storage location. Proposed server: 1 vCPU, 1 GiB RAM, 20 GiB virtual disk, no desktop; run one guest at a time. No server has been created.
 
 [Lab 01](labs/01-virtualization-inventory.md) remains Guided: its [outputs](journal/2026-10-09-virtualization-inventory.md) are recorded, and the [reflection](journal/2026-10-12-inventory-reflection.md) identified confusion between a VM and its virtual network. Revisit their roles during practical setup rather than continuing a separate verbal quiz.
 
@@ -24,7 +24,7 @@ Looking up syntax is permitted at every level. A published note alone does not a
 | Desktop setup | [03](troubleshooting/03-kde-plasma.md) | Guided | Explain the dependency chain; no reinstall required |
 | Bluetooth | [04](troubleshooting/04-bluetooth.md) | Guided; exact repair sequence incomplete | Explain one useful service/log observation |
 | Virtualization and network context | [05](troubleshooting/05-virtualization.md), [Lab 01 attempt](journal/2026-10-09-virtualization-inventory.md), [reflection](journal/2026-10-12-inventory-reflection.md) | Guided; outputs supplied; initial explanation confused VM and virtual network; mentor correction given | Distinguish host, guest VM and virtual network; explain why network state alone does not prove guest internet access |
-| Host memory and storage | [Capacity check](journal/2026-10-12-host-capacity.md) | Guided execution; learner correctly identified available RAM and disk fields after column guidance | Compare a fresh memory snapshot and help choose VM resources; independent capacity diagnosis unassessed |
+| Host memory and storage | [Capacity check](journal/2026-10-12-host-capacity.md) | Guided execution; learner correctly read available RAM/disk; supplied current VM and process observations; QEMU interpretation mentor-guided | Compare available RAM after a normal Windows shutdown and confirm VM disk location; independent capacity diagnosis unassessed |
 | Display setup | [06](troubleshooting/06-dual-monitor-hdmi.md) | Guided | Explain extended versus mirrored layout |
 | Shutdown and VM lifecycle | [07](troubleshooting/07-shutdown-and-vm.md) | Guided; improvement reported, precise delay mechanism unproven | Separate observed timing from a root-cause hypothesis |
 | Paths and file operations | [08](troubleshooting/08-file-operations-and-cat.md) | Guided | Explain paths and overwrite behaviour in a disposable example |
@@ -37,7 +37,8 @@ Looking up syntax is permitted at every level. A published note alone does not a
 - [ ] Add the learner's explanation and publish the completed lab assessment; the recorded attempt remains guided.
 - [ ] Repeat the observation later with fewer hints.
 - [x] Capture initial available RAM/disk and review the learner's reading of the output.
-- [ ] Recheck available RAM after closing unused applications; confirm VM storage location before sizing the disposable server lab.
+- [x] Obtain current VM state and largest-process memory observations; Windows is running and QEMU is the largest listed process.
+- [ ] After saving guest work, shut Windows down normally and verify VM state and available RAM; confirm storage location before creating the server lab.
 
 ## Documentation review queue
 

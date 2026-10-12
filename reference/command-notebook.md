@@ -86,6 +86,21 @@ df -hT / /home
 - **Limit:** these are snapshots, not a guarantee that a future workload will fit.
   The [capacity journal](../journal/2026-10-12-host-capacity.md) records actual evidence.
 
+## Which processes have the largest resident-memory usage?
+
+```bash
+ps -eo pid,comm,rss --sort=-rss | head -n 11
+```
+
+- **Where and safety:** Debian host terminal; read-only, no sudo required.
+- **Purpose:** list all visible processes by descending resident-memory usage,
+  showing the header and first ten processes.
+- **Columns:** `pid` is the process ID, `comm` is the command name, and `rss`
+  is resident memory in KiB. Divide RSS by 1,048,576 to express it in GiB.
+- **Limit:** a process name alone does not identify its exact VM or prove a
+  memory leak. RSS includes shared pages and is not configured guest memory.
+  This snapshot does not measure ongoing swap activity.
+
 ## Add the next command
 
 For each new entry, record the question, exact command, where to run it, whether
