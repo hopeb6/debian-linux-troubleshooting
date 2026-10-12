@@ -43,6 +43,20 @@ virsh -c qemu:///system net-list --all
 
 ## What should I do with an unexpected result?
 
+### Keep VM state and network state separate
+
+The Debian host runs the VM; Windows runs inside the VM. A virtual network
+connects attached VMs to other systems. It can remain active while a VM is
+stopped. Stopping that network does not necessarily stop an already-running
+VM, although connectivity through the network can be interrupted.
+
+Use `list --all` for VM states and `net-list --all` for network states on the
+chosen connection. Neither alone establishes guest internet access. This is
+a mentor-provided reference; understanding is assessed in the
+[inventory reflection](../journal/2026-10-12-inventory-reflection.md).
+
+### Record evidence before proposing changes
+
 Write down the exact command, connection, and redacted output before proposing
 a change. A permission or connection error is not the same as an empty list.
 Ask what the result proves and what it leaves unknown.
