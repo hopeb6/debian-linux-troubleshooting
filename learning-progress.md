@@ -2,7 +2,7 @@
 
 ## Current milestone
 
-Prepare the separate Debian server lab using the [2026-10-12 capacity check](journal/2026-10-12-host-capacity.md). Latest learner output confirms Windows stopped and 2.8 GiB available RAM, compared with the earlier 1.5 GiB. Swap occupancy rose to 4.1 GiB; current swap activity is unmeasured. Starting server allocation: 1 vCPU, 1 GiB RAM, 20 GiB virtual disk, no desktop; run one guest at a time. The active `default` directory storage pool targets `/var/lib/libvirt/images` and reports enough space for the proposed disk. Next, check that exact target's filesystem and look for an existing Debian installer ISO before obtaining/verifying installation media. No server has been created.
+Prepare the separate Debian server lab using the [2026-10-12 capacity check](journal/2026-10-12-host-capacity.md). Latest learner output confirms Windows stopped and 2.8 GiB available RAM, compared with the earlier 1.5 GiB. Swap occupancy rose to 4.1 GiB; current swap activity is unmeasured. Starting server allocation: 1 vCPU, 1 GiB RAM, 20 GiB virtual disk, no desktop; run one guest at a time. The active `default` storage pool targets `/var/lib/libvirt/images`; a direct `df` check confirms the root ext4 filesystem with 141G available. Next, obtain the official amd64 netinst installer and check its checksum. Download and verification remain unperformed; no server has been created.
 
 [Lab 01](labs/01-virtualization-inventory.md) remains Guided: its [outputs](journal/2026-10-09-virtualization-inventory.md) are recorded, and the [reflection](journal/2026-10-12-inventory-reflection.md) identified confusion between a VM and its virtual network. Revisit their roles during practical setup rather than continuing a separate verbal quiz.
 
@@ -24,7 +24,7 @@ Looking up syntax is permitted at every level. A published note alone does not a
 | Desktop setup | [03](troubleshooting/03-kde-plasma.md) | Guided | Explain the dependency chain; no reinstall required |
 | Bluetooth | [04](troubleshooting/04-bluetooth.md) | Guided; exact repair sequence incomplete | Explain one useful service/log observation |
 | Virtualization and network context | [05](troubleshooting/05-virtualization.md), [Lab 01 attempt](journal/2026-10-09-virtualization-inventory.md), [reflection](journal/2026-10-12-inventory-reflection.md) | Guided; outputs supplied; initial explanation confused VM and virtual network; mentor correction given | Distinguish host, guest VM and virtual network; explain why network state alone does not prove guest internet access |
-| Host memory and storage | [Capacity check](journal/2026-10-12-host-capacity.md) | Guided; learner correctly read initial RAM/disk values and supplied process, stopped-VM, memory and storage-pool outputs; interpretation/sizing mentor-guided | Verify the selected storage target's filesystem capacity; independent capacity diagnosis unassessed |
+| Host memory and storage | [Capacity check](journal/2026-10-12-host-capacity.md) | Guided; learner correctly read initial RAM/disk values and supplied process, VM, pool and target-filesystem evidence; interpretation/sizing mentor-guided | Apply the selected resources during VM creation; independent capacity diagnosis unassessed |
 | Display setup | [06](troubleshooting/06-dual-monitor-hdmi.md) | Guided | Explain extended versus mirrored layout |
 | Shutdown and VM lifecycle | [07](troubleshooting/07-shutdown-and-vm.md) | Guided; improvement reported, precise delay mechanism unproven | Separate observed timing from a root-cause hypothesis |
 | Paths and file operations | [08](troubleshooting/08-file-operations-and-cat.md) | Guided | Explain paths and overwrite behaviour in a disposable example |
@@ -40,7 +40,8 @@ Looking up syntax is permitted at every level. A published note alone does not a
 - [x] Obtain VM state and largest-process memory observations; the initial follow-up showed Windows running and QEMU as the largest listed process.
 - [x] Receive stopped-Windows verification and a new memory snapshot: 2.8 GiB available; exact shutdown method not separately reported.
 - [x] Record active `default` storage pool and its `/var/lib/libvirt/images` target from learner-supplied XML.
-- [ ] Check the target filesystem and identify/verify a Debian installer before creating the separate server VM.
+- [x] Verify the target filesystem: root ext4 filesystem, 141G available. Downloads search reported no matching path, with wildcard escaping uncertain.
+- [ ] Download the official Debian amd64 netinst ISO and check its checksum before creating the separate server VM.
 
 ## Documentation review queue
 

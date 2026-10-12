@@ -1,7 +1,7 @@
 # 2026-10-12 — Check host capacity before building the server lab
 
 **Goal:** identify available RAM and disk space before sizing a separate Debian server VM.
-**Status:** Windows stopped, 2.8 GiB available RAM, and default storage path recorded; small server VM sizing selected; target filesystem check and installer preparation pending.
+**Status:** host capacity and target filesystem checked; small server VM sizing selected; installer download and checksum check pending.
 **Assistance:** mentor supplied commands and column guidance; learner ran them and correctly identified the available values.
 
 ## Learner commands and evidence
@@ -176,3 +176,35 @@ find "$HOME/Downloads" -maxdepth 1 -type f -iname '*debian*.iso'
 Both run read-only on Debian without sudo. The first identifies the filesystem and space available at the selected storage target. The second looks only at files directly inside the usual Downloads directory for an existing Debian ISO; an empty result would not prove there is no installer elsewhere. Any existing ISO must be identified and verified before use. Do not assume the `Downloads` pool points to this home-directory path merely from its name.
 
 The learner supplied the storage evidence; its interpretation and next checks are mentor-guided. No new storage volume, download, VM, or installation has been performed in this step.
+
+## Follow-up — verify the target filesystem and prepare installation media
+
+The learner ran `df -hT /var/lib/libvirt/images` on Debian and supplied:
+
+```text
+Filesystem     Type  Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  ext4  226G   74G  141G  35% /
+```
+
+This confirms that the chosen VM storage directory uses the root ext4 filesystem and has 141G available in this snapshot. The planned new 20 GiB disk fits within the reported space. No repartitioning is needed for this plan.
+
+The learner also supplied a Downloads search with no file paths returned. As pasted, the command was:
+
+```bash
+find "$HOME/Downloads" -maxdepth 1 -type f -iname '\*debian\*.iso'
+```
+
+The backslashes may be chat-formatting escapes; if entered literally inside the single quotes, they would prevent wildcard matching. Therefore this result is recorded only as no matching file reported, not proof that the computer has no ISO. The plan is to download a known official installer into a dedicated folder, without deleting existing files.
+
+The assistant checked the [official Debian netinst page](https://www.debian.org/distrib/netinst). Its amd64 link pointed to `debian-13.7.0-amd64-netinst.iso` in the `current/amd64/iso-cd/` directory at this check. The web tool could not retrieve the binary or checksum file; no successful download or hash verification is claimed. [Debian's verification guide](https://www.debian.org/CD/verify) documents SHA512 checksum checks and separately explains signature authentication.
+
+**Next milestone — instructions only:** download the amd64 netinst ISO and its `SHA512SUMS` file over HTTPS into `~/Downloads/debian-server-lab`, then compare the ISO with the published checksum. These commands have not yet been reported executed:
+
+```bash
+mkdir -p "$HOME/Downloads/debian-server-lab" && cd "$HOME/Downloads/debian-server-lab"
+wget --no-clobber https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.7.0-amd64-netinst.iso
+wget --no-clobber https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/SHA512SUMS
+sha512sum --ignore-missing -c SHA512SUMS
+```
+
+Run on the Debian host without sudo; stop if folder creation/change or a download fails. This creates a directory and downloads files but installs no packages or OS. `--no-clobber` preserves existing files. Success requires the expected ISO filename with an `OK` checksum result; errors or a mismatch must be reviewed before use. This is an integrity comparison against the HTTPS-published checksum, not a completed OpenPGP signature check. No ISO download, checksum result, or new server VM is yet claimed.
