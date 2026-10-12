@@ -1,7 +1,7 @@
 # 2026-10-12 — Check host capacity before building the server lab
 
 **Goal:** identify available RAM and disk space before sizing a separate Debian server VM.
-**Status:** initial capacity and follow-up process measurements received; Windows now observed running; shutdown comparison and VM storage location pending.
+**Status:** latest learner output confirms Windows stopped and 2.8 GiB available RAM; small server VM sizing selected; storage location and installation pending.
 **Assistance:** mentor supplied commands and column guidance; learner ran them and correctly identified the available values.
 
 ## Learner commands and evidence
@@ -91,3 +91,39 @@ The proposed server configuration is 1 vCPU, 1 GiB RAM, and a 20 GiB virtual dis
 **Next step, instructions only:** when finished using Windows, save work inside the guest and use Windows' normal Shut down action. Then run `virsh -c qemu:///system list --all` and `free -h` on Debian. Success means a confirmed `shut off` state and a new available-memory measurement for comparison; the amount reclaimed is not yet known. Closing the VM viewer alone is not verification of shutdown. This targeted comparison supersedes the earlier generic suggestion to close desktop applications.
 
 No shutdown, memory improvement, or new installation has yet been reported. The assistant did not operate the guest or run these learning checks. Interpretation remains mentor-guided.
+
+## Follow-up — verify stopped guest and compare memory
+
+Following the shutdown instructions, the learner supplied a new Debian-host observation:
+
+```bash
+virsh -c qemu:///system list --all
+```
+
+```text
+ Id   Name      State
+--------------------------
+ -    win11-2   shut off
+```
+
+The output confirms the stopped state. The learner did not separately describe the shutdown method used.
+
+The learner then ran the requested read-only memory check on Debian:
+
+```bash
+free -h
+```
+
+```text
+               total        used        free      shared  buff/cache   available
+Mem:           7.6Gi       4.7Gi       1.9Gi       625Mi       1.8Gi       2.8Gi
+Swap:          7.8Gi       4.1Gi       3.7Gi
+```
+
+**Mentor comparison:** available RAM increased from 1.5 to 2.8 GiB, approximately 1.3 GiB using the rounded displayed values. Used RAM fell from 6.1 to 4.7 GiB. These snapshots do not establish how much of the change is attributable solely to the VM, since other activity was not controlled. Swap occupancy increased from 2.6 to 4.1 GiB; the cause and current swap-in/out activity are unknown. Used swap need not immediately empty after RAM becomes available. No performance fault or complete resolution of memory pressure is claimed.
+
+**Decision:** proceed with a modest starting allocation of 1 vCPU, 1 GiB RAM and a 20 GiB virtual disk for a Debian server without a desktop, keeping Windows stopped during lab use. The 2.8 GiB available snapshot supports this initial allocation with room for host/virtualization overhead, but is not a guarantee for every workload. No VM has yet been created.
+
+**Next step — proposed, not executed:** run `virsh -c qemu:///system pool-list --all` to identify configured storage pools. If a pool named `default` is listed, inspect it with `virsh -c qemu:///system pool-dumpxml default` and identify its target path. Both checks are read-only. Otherwise, share the pool listing before selecting another pool. Confirm the target filesystem's capacity before creating a new disk; do not reuse the Windows disk.
+
+The learner supplied both new outputs; the assistant supplied the comparison and sizing decision. Guided status is unchanged. This follow-up supersedes the earlier pending-shutdown status while preserving its historical observations.
