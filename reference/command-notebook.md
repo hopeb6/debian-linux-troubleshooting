@@ -101,6 +101,24 @@ ps -eo pid,comm,rss --sort=-rss | head -n 11
   memory leak. RSS includes shared pages and is not configured guest memory.
   This snapshot does not measure ongoing swap activity.
 
+## Where will libvirt store VM disks?
+
+```bash
+virsh -c qemu:///system pool-list --all
+virsh -c qemu:///system pool-dumpxml default
+```
+
+- **Where and safety:** Debian host terminal; read-only. Use the second command
+  only when the intended pool is actually named `default`.
+- **Purpose:** list storage pools, then inspect a selected pool's definition.
+- **Interpretation:** for a `dir` pool, the path inside `<target>` is its host
+  directory. A pool's name is separate from a VM or network name, even if both
+  resources happen to be called `default`.
+- **Limit:** this does not create a disk, verify an installer, or establish
+  that a similarly named pool points to your Downloads directory.
+  Pool capacity is a report of its backing storage, not dedicated space already
+  reserved for a new VM.
+
 ## Add the next command
 
 For each new entry, record the question, exact command, where to run it, whether

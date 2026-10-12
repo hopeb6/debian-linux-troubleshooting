@@ -1,7 +1,7 @@
 # 2026-10-12 — Check host capacity before building the server lab
 
 **Goal:** identify available RAM and disk space before sizing a separate Debian server VM.
-**Status:** latest learner output confirms Windows stopped and 2.8 GiB available RAM; small server VM sizing selected; storage location and installation pending.
+**Status:** Windows stopped, 2.8 GiB available RAM, and default storage path recorded; small server VM sizing selected; target filesystem check and installer preparation pending.
 **Assistance:** mentor supplied commands and column guidance; learner ran them and correctly identified the available values.
 
 ## Learner commands and evidence
@@ -127,3 +127,52 @@ Swap:          7.8Gi       4.1Gi       3.7Gi
 **Next step — proposed, not executed:** run `virsh -c qemu:///system pool-list --all` to identify configured storage pools. If a pool named `default` is listed, inspect it with `virsh -c qemu:///system pool-dumpxml default` and identify its target path. Both checks are read-only. Otherwise, share the pool listing before selecting another pool. Confirm the target filesystem's capacity before creating a new disk; do not reuse the Windows disk.
 
 The learner supplied both new outputs; the assistant supplied the comparison and sizing decision. Guided status is unchanged. This follow-up supersedes the earlier pending-shutdown status while preserving its historical observations.
+
+## Follow-up — locate the VM storage pool
+
+The learner ran these read-only commands in the Debian host terminal:
+
+```bash
+virsh -c qemu:///system pool-list --all
+virsh -c qemu:///system pool-dumpxml default
+```
+
+The pool listing supplied was:
+
+```text
+ Name        State    Autostart
+---------------------------------
+ default     active   yes
+ Downloads   active   yes
+```
+
+Selected lines from the supplied `default` pool XML are preserved below; the UUID and remaining XML are omitted:
+
+```xml
+<pool type='dir'>
+  <name>default</name>
+  <capacity unit='bytes'>241642119168</capacity>
+  <allocation unit='bytes'>78170796032</allocation>
+  <available unit='bytes'>163471323136</available>
+```
+
+The target path inside `<target>` was:
+
+```xml
+<path>/var/lib/libvirt/images</path>
+```
+
+**Mentor interpretation:** `default` is an active directory-backed storage pool. Its disk images live in `/var/lib/libvirt/images`. The storage pool named `default` is separate from the virtual network also named `default`; a shared name does not make them the same resource. The `Downloads` pool is listed but its target has not been inspected.
+
+The reported available space exceeds the planned 20 GiB virtual disk size. It is a pool report, not a new `df` measurement of that exact target; its reported bytes differ from the earlier rounded `df` output. No cause for that difference is established here. Confirm the target filesystem before creating the disk. No repartitioning or reuse of the Windows disk is planned.
+
+**Next checks — instructions only, not yet executed:**
+
+```bash
+df -hT /var/lib/libvirt/images
+find "$HOME/Downloads" -maxdepth 1 -type f -iname '*debian*.iso'
+```
+
+Both run read-only on Debian without sudo. The first identifies the filesystem and space available at the selected storage target. The second looks only at files directly inside the usual Downloads directory for an existing Debian ISO; an empty result would not prove there is no installer elsewhere. Any existing ISO must be identified and verified before use. Do not assume the `Downloads` pool points to this home-directory path merely from its name.
+
+The learner supplied the storage evidence; its interpretation and next checks are mentor-guided. No new storage volume, download, VM, or installation has been performed in this step.
